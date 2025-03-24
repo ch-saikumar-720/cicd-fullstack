@@ -38,4 +38,22 @@ http://IPaddress:5000
 
 **Frontend Configuration:**
 
+Open the frontend folder
+This is a react.js application and requires npm modules and libraries
 
+cd src/
+vim Login.js 
+#change the database url to http://IPaddressofinstance:5000/login
+vim Signup.js
+#change the database url to http://IPaddressofinstance:5000/signup
+
+sudo apt update
+sudo apt install -y nodejs npm
+node -v   # Check Node.js version
+npm -v    # Check npm version
+
+npm start
+
+
+We can access the frontend app with
+http://IPofinstance:3000
