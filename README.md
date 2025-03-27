@@ -57,3 +57,11 @@ npm start
 
 We can access the frontend app with
 http://IPofinstance:3000
+
+
+
+**Docker container creation for mysql:**
+
+sudo docker run -d  --name mysql-container -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=kartikdatabase  -e MYSQL_USER=kartikuser -e MYSQL_PASSWORD=password -p 3300:3306 mysql:latest || true
+
+docker inspect containerid  # use the IP address of the mysql container and paste it in the app.py of the backend.As we are not using the localhost or external RDS so we have to use the IP address of the mysql container. 
