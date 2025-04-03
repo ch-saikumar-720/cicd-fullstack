@@ -82,6 +82,11 @@ curl http://localhost:5000
 docker build -t frontend .
 docker run -d -p 3000:3000 frontend
 
+Make changes in Login.js and Signup.js 
+change the backend configuration to http://IPofinstance:5000/signup    do similarly to login.js also
+
+If you are using the docker network then use the docker "containername:5000" instean of IPofinstance
+
 access the frontend with IP of the instance:3000 
 
 
