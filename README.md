@@ -66,15 +66,16 @@ Create a mysql container with the below command
 
 sudo docker run -d  --name mysql-container -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=kartikdatabase  -e MYSQL_USER=kartikuser -e MYSQL_PASSWORD=password -p 3300:3306 mysql:latest || true
 
-docker inspect containerid  # use the IP address of the mysql container and paste it in the app.py of the backend.As we are not using the localhost or external RDS so we have to use the IP address of the mysql container. 
 
 **Backend docker container**
+
+docker inspect containerid  # use the IP address of the mysql container and paste it in the app.py of the backend.As we are not using the localhost or external RDS so we have to use the IP address of the mysql container.
 
 Run the docker commands
 docker build -t backend .   #creates a docker images of backend
 docker run -d -p 5000:5000 backend  ## creates a docker container of the backend.
 
-use curl IPof the backendcontainer:5000  to access the backend.
+curl http://localhost:5000
 
 **Frontend docker container**
 
