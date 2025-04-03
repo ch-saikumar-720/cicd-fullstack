@@ -75,15 +75,17 @@ Run the docker commands
 docker build -t backend .   #creates a docker images of backend
 docker run -d -p 5000:5000 backend  ## creates a docker container of the backend.
 
-curl http://localhost:5000
+curl http://localhost:5000 (or)
+http://IPofinstance:5000
 
 **Frontend docker container**
 
 docker build -t frontend .
-docker run -d -p 3000:3000 frontend
+docker run -d -p 3000:80 --name frontend-container frontend
+
 
 Make changes in Login.js and Signup.js 
-change the backend configuration to http://IPofinstance:5000/signup    do similarly to login.js also
+change the backend configuration to http://publicIPofinstance:5000/signup    do similarly to login.js also
 
 If you are using the docker network then use the docker "containername:5000" instean of IPofinstance
 
