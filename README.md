@@ -59,7 +59,7 @@ We can access the frontend app with
 http://IPofinstance:3000
 
 **Deployment with containers**
-Use the instance with 2CPUs t2.nano or t3.medium
+Use the instance with 2vCPUs t2.large and 15 GB volume
 
 **Docker container creation for mysql:**
 Create a mysql container with the below command
