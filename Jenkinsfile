@@ -34,7 +34,7 @@ pipeline {
             // Check if ECR repository 'kubes' exists, create if it doesn't
             sh '''
               aws ecr describe-repositories --repository-names kubes --region $AWS_REGION || \
-              aws ecr create-repository --repository-name kubes --region $AWS_REGION
+              aws ecr create-repository --repository-name kubes/backend --region $AWS_REGION
             '''
             // Build and push the backend image
             sh '''
