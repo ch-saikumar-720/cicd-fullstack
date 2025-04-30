@@ -81,6 +81,7 @@ pipeline {
 
           echo "Backend LoadBalancer DNS: ${lb_dns}"
 
+          // Replace backend URL in frontend files with the correct LoadBalancer DNS
           sh """
             sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Login.js
             sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Signup.js
