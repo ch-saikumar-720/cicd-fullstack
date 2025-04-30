@@ -30,10 +30,18 @@ pipeline {
     stage('Build and Push Backend') {
       steps {
         dir('backend') {
-          sh '''
-            docker build -t $BACKEND_IMAGE .
-            docker push $BACKEND_IMAGE
-          '''
+          script {
+            // Check if ECR repository 'kubes' exists, create if it doesn't
+            sh '''
+              aws ecr describe-repositories --repository-names kubes --region $AWS_REGION || \
+              aws ecr create-repository --repository-name kubes --region $AWS_REGION
+            '''
+            // Build and push the backend image
+            sh '''
+              docker build -t $BACKEND_IMAGE .
+              docker push $BACKEND_IMAGE
+            '''
+          }
         }
       }
     }
@@ -48,10 +56,17 @@ pipeline {
 
     stage('Deploy MySQL and Backend') {
       steps {
-        sh '''
-          kubectl apply -f k8s/mysql.yaml
-          kubectl apply -f k8s/backend.yaml
-        '''
+        script {
+          // Update the backend.yaml with the latest image name
+          sh """
+            sed -i 's|image: .*|image: ${BACKEND_IMAGE}|g' k8s/backend.yaml
+          """
+          // Apply the MySQL and backend deployment
+          sh '''
+            kubectl apply -f k8s/mysql.yaml
+            kubectl apply -f k8s/backend.yaml
+          '''
+        }
       }
     }
 
@@ -71,7 +86,7 @@ pipeline {
 
           echo "Backend LoadBalancer DNS: ${lb_dns}"
 
-          // Update frontend JS files
+          // Update frontend JS files with the backend LoadBalancer DNS
           sh """
             sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/login.js
             sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/signup.js
