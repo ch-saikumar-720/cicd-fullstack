@@ -77,7 +77,7 @@ pipeline {
           timeout(time: 3, unit: 'MINUTES') {
             waitUntil {
               lb_dns = sh(
-                script: "kubectl get svc backend-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'",
+                script: "kubectl get svc flask-backend-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'",
                 returnStdout: true
               ).trim()
               return lb_dns != ''
