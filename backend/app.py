@@ -10,7 +10,7 @@ CORS(app)
 bcrypt = Bcrypt(app)
 
 # Database Configuration (Replace with your AWS RDS credentials)
-DB_HOST = "172.17.0.2"
+DB_HOST = "mysql-service"
 DB_USER = "kartikuser"
 DB_PASSWORD = "password"
 DB_NAME = "kartikdatabase"
