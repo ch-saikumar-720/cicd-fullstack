@@ -31,13 +31,10 @@ pipeline {
       steps {
         dir('backend') {
           script {
-            // Check if ECR repository 'kubes' exists, create if it doesn't
             sh '''
-              aws ecr describe-repositories --repository-names kubes --region $AWS_REGION || \
+              aws ecr describe-repositories --repository-names kubes/backend --region $AWS_REGION || \
               aws ecr create-repository --repository-name kubes/backend --region $AWS_REGION
-            '''
-            // Build and push the backend image
-            sh '''
+
               docker build -t $BACKEND_IMAGE .
               docker push $BACKEND_IMAGE
             '''
@@ -57,11 +54,9 @@ pipeline {
     stage('Deploy MySQL and Backend') {
       steps {
         script {
-          // Update the backend.yaml with the latest image name
           sh """
             sed -i 's|image: .*|image: ${BACKEND_IMAGE}|g' backend/backend.yaml
           """
-          // Apply the MySQL and backend deployment
           sh '''
             kubectl apply -f backend/mysql.yaml
             kubectl apply -f backend/backend.yaml
@@ -86,7 +81,6 @@ pipeline {
 
           echo "Backend LoadBalancer DNS: ${lb_dns}"
 
-          // Update frontend JS files with the backend LoadBalancer DNS
           sh """
             sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Login.js
             sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Signup.js
@@ -99,6 +93,9 @@ pipeline {
       steps {
         dir('frontend') {
           sh '''
+            aws ecr describe-repositories --repository-names kubes/frontend --region $AWS_REGION || \
+            aws ecr create-repository --repository-name kubes/frontend --region $AWS_REGION
+
             docker build -t $FRONTEND_IMAGE .
             docker push $FRONTEND_IMAGE
           '''
