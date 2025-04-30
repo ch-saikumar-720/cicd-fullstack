@@ -59,12 +59,12 @@ pipeline {
         script {
           // Update the backend.yaml with the latest image name
           sh """
-            sed -i 's|image: .*|image: ${BACKEND_IMAGE}|g' k8s/backend.yaml
+            sed -i 's|image: .*|image: ${BACKEND_IMAGE}|g' backend/backend.yaml
           """
           // Apply the MySQL and backend deployment
           sh '''
-            kubectl apply -f k8s/mysql.yaml
-            kubectl apply -f k8s/backend.yaml
+            kubectl apply -f backend/mysql.yaml
+            kubectl apply -f backend/backend.yaml
           '''
         }
       }
@@ -109,7 +109,7 @@ pipeline {
     stage('Deploy Frontend') {
       steps {
         sh '''
-          kubectl apply -f k8s/frontend.yaml
+          kubectl apply -f frontend/frontend.yaml
         '''
       }
     }
