@@ -88,8 +88,8 @@ pipeline {
 
           // Update frontend JS files with the backend LoadBalancer DNS
           sh """
-            sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/login.js
-            sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/signup.js
+            sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Login.js
+            sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Signup.js
           """
         }
       }
