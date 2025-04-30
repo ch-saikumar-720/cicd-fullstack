@@ -35,7 +35,7 @@ pipeline {
               aws ecr describe-repositories --repository-names kubes/backend --region $AWS_REGION || \
               aws ecr create-repository --repository-name kubes/backend --region $AWS_REGION
 
-              docker build -t $BACKEND_IMAGE .
+              docker build -t $BACKEND_IMAGE . 
               docker push $BACKEND_IMAGE
             '''
           }
@@ -81,10 +81,10 @@ pipeline {
 
           echo "Backend LoadBalancer DNS: ${lb_dns}"
 
-          // Replace backend URL in frontend files with the correct LoadBalancer DNS
+          // Replace backend URL in frontend files without the port 5000
           sh """
-            sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Login.js
-            sed -i "s|http://.*:5000|http://${lb_dns}:5000|g" frontend/src/Signup.js
+            sed -i "s|http://.*|http://${lb_dns}|g" frontend/src/Login.js
+            sed -i "s|http://.*|http://${lb_dns}|g" frontend/src/Signup.js
           """
         }
       }
@@ -97,7 +97,7 @@ pipeline {
             aws ecr describe-repositories --repository-names kubes/frontend --region $AWS_REGION || \
             aws ecr create-repository --repository-name kubes/frontend --region $AWS_REGION
 
-            docker build -t $FRONTEND_IMAGE .
+            docker build -t $FRONTEND_IMAGE . 
             docker push $FRONTEND_IMAGE
           '''
         }
